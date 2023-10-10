@@ -8,6 +8,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 {/* dev */}
 import BottomTabNavigation from './src/navigation/BottonTabNavigation'
 import { Welcome } from './src/screens'
+import { EditProfile } from './src/screens'
+import { Settings } from './src/screens'
+import { Search } from './src/screens'
+import { Notifications } from './src/screens'
 
 const Stack = createNativeStackNavigator()
 
@@ -36,6 +40,9 @@ export default function App() {
         <SafeAreaProvider onLayout={onLayoutRootView}>
             <NavigationContainer>
                 <Stack.Navigator>
+                    {/* Auth */}
+
+                    {/* SplashScreen */}
                     <Stack.Screen
                         name="Welcome"
                         component={Welcome}
@@ -43,6 +50,39 @@ export default function App() {
                             headerShown: false,
                         }}
                     />
+
+                    {/* Ekstra */}
+                    <Stack.Screen
+                        name="EditProfile"
+                        component={EditProfile}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Settings"
+                        component={Settings}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Search"
+                        component={Search}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Notifications"
+                        component={Notifications}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+
+
+                    {/* BottomNav */}
                     <Stack.Screen
                         name="BottomTabNavigation"
                         component={BottomTabNavigation}

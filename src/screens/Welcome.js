@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, ImageBackground  } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
@@ -28,51 +28,56 @@ const Welcome = () => {
 
     useEffect(() => {
         if (progress >= 1) {
-            // navigate to the Feed Screen
-            navigation.navigate('BottomTabNavigation', { name: 'Feed' })
+            // navigate to the Home Screen
+            navigation.navigate('BottomTabNavigation', { name: 'Home' })
         }
     }, [progress, navigation])
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
-            <View
-                style={{
-                    flex: 1,
-                    marginHorizontal: 22,
-                    alignItems: 'center',
-                }}
+        <SafeAreaView style={{ flex: 1 }}>
+            <ImageBackground
+                source={images.bg}
+                style={{ flex: 10 }}
             >
-                <Image
-                    source={images.hero}
-                    resizeMode="contain"
+                <View
                     style={{
-                        width: SIZES.width * 0.8,
-                        marginVertical: SIZES.padding2,
+                        flex: 1,
+                        marginHorizontal: 22,
+                        alignItems: 'center',
                     }}
-                />
+                >
+                    <Image
+                        source={images.logo_w}
+                        resizeMode="contain"
+                        style={{
+                            width: SIZES.width * 0.8,
+                            marginVertical: SIZES.padding2,
+                        }}
+                    />
 
-                <View
-                    style={{
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text style={{ ...FONTS.body3 }}>Welcome to</Text>
-                    <Text
-                        style={{ ...FONTS.h1, marginVertical: SIZES.padding2 }}
+                    <View
+                        style={{
+                            alignItems: 'center',
+                        }}
                     >
-                        SPORTSCAMP
-                    </Text>
+                        <Text style={{ ...FONTS.body3 }}>Welcome to</Text>
+                        <Text
+                            style={{ ...FONTS.h1, marginVertical: SIZES.padding2 }}
+                        >
+                            SPORTSCAMP
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            position: 'absolute',
+                            bottom: 100,
+                        }}
+                    >
+                        {progress < 1 && <DotsView progress={progress} />}
+                    </View>
                 </View>
-                <View
-                    style={{
-                        alignItems: 'center',
-                        position: 'absolute',
-                        bottom: 100,
-                    }}
-                >
-                    {progress < 1 && <DotsView progress={progress} />}
-                </View>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
