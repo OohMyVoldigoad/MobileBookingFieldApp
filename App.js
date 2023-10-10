@@ -12,6 +12,8 @@ import { EditProfile } from './src/screens'
 import { Settings } from './src/screens'
 import { Search } from './src/screens'
 import { Notifications } from './src/screens'
+import { CabangOlahraga } from './src/screens'
+import { Lapangan } from './src/screens'
 
 const Stack = createNativeStackNavigator()
 
@@ -80,7 +82,20 @@ export default function App() {
                             headerShown: false
                         }}
                     />
-
+                    <Stack.Screen
+                        name="cabangOlahraga"
+                        component={CabangOlahraga}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Lapangan"
+                        component={Lapangan}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
 
                     {/* BottomNav */}
                     <Stack.Screen

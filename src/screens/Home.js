@@ -1,14 +1,15 @@
-import { View, Text, TouchableOpacity, ScrollView, Image, TextInput, Platform, StyleSheet, ImageBackground } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Image,  Platform, StyleSheet, ImageBackground } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
+import { LinearGradient } from 'expo-linear-gradient'
 import {Ionicons} from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 
 {/* dev */}
 import { theme } from '../theme';
-import { categoriesData } from '../constans';
+import { cabangOlahraga, destinationData } from '../constans';
 import { COLORS } from '../constans';
 
 const ios = Platform.OS=='ios';
@@ -54,23 +55,18 @@ const Feed = () => {
                   <View className="mx-2 flex-row justify-between items-center">
                     <Text style={{fontSize: wp(4)}} className="font-semibold text-neutral-700">Cabang Olahraga</Text>
                   </View>
-                  <ScrollView
-                    horizontal
-                    contentContainerStyle={{paddingHorizontal: 7}}
-                    className="space-x-4"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    {
-                        categoriesData.map((cat,index)=>{
-                            return (
-                                <TouchableOpacity key={index} className="flex items-center space-y-2" onPress={()=> navigation.navigate('DestinationScreen')}>
-                                    <Image source={cat.image} className="rounded-3xl" style={{width: wp(30), height: wp(25)}} />
-                                    <Text className="text-neutral-700 font-medium" style={{fontSize: wp(3)}}>{cat.title}</Text>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                  </ScrollView>
+                    <View className="mx-2 flex-row justify-between items-center">
+                      {
+                          cabangOlahraga.map((item, index)=>{
+                              return (
+                                  <TouchableOpacity key={index} className="flex items-center space-y-2" onPress={()=> navigation.navigate('cabangOlahraga', {...item})}>
+                                      <Image source={item.image} className="rounded-3xl" style={{width: wp(25), height: wp(23)}} />
+                                      <Text className="text-neutral-700 font-medium" style={{fontSize: wp(3)}}>{item.title}</Text>
+                                  </TouchableOpacity>
+                              )
+                          })
+                      }
+                    </View>
                 </View>
 
                 {/* Lapangan */}
@@ -88,12 +84,31 @@ const Feed = () => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {
-                        categoriesData.map((cat,index)=>{
+                        destinationData.map((item,index)=>{
                             return (
-                                <TouchableOpacity key={index} className="flex items-center space-y-2">
-                                    <Image source={cat.image} className="rounded-3xl" style={{width: wp(30), height: wp(50)}} />
-                                    <Text className="text-neutral-700 font-medium" style={{fontSize: wp(3)}}>{cat.title}</Text>
-                                </TouchableOpacity>
+                              <TouchableOpacity
+                              key={index}
+                              onPress={()=> navigation.navigate('Lapangan', {...item})}
+                              style={{width: wp(44), height: wp(65)}}
+                              className="flex justify-end relative p-4 py-6 space-y-2 mb-1">
+                                  <Image
+                                      source={item.image}
+                                      style={{width: wp(44), height: wp(65), borderRadius: 35}}
+                                      className="absolute"
+                                  />
+                  
+                              <LinearGradient
+                                  colors={['transparent', 'rgba(0,0,0,0.8)']}
+                                  style={{width: wp(44), height: hp(15), borderBottomLeftRadius: 35, borderBottomRightRadius: 35}}
+                                  start={{x: 0.5, y: 0}}
+                                  end={{x: 0.5, y: 1}}
+                                  className="absolute bottom-0"
+                              />
+                  
+                              <Text style={{fontSize: wp(4)}} className="text-white font-semibold">{item.title}</Text>
+                              <Text style={{fontSize: wp(2.2)}} className="text-white">{item.shortDescription}</Text>
+                  
+                          </TouchableOpacity>
                             )
                         })
                     }
@@ -115,12 +130,31 @@ const Feed = () => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {
-                        categoriesData.map((cat,index)=>{
+                        destinationData.map((item,index)=>{
                             return (
-                                <TouchableOpacity key={index} className="flex items-center space-y-2">
-                                    <Image source={cat.image} className="rounded-3xl" style={{width: wp(70), height: wp(50)}} />
-                                    <Text className="text-neutral-700 font-medium" style={{fontSize: wp(3)}}>{cat.title}</Text>
-                                </TouchableOpacity>
+                              <TouchableOpacity
+                              key={index}
+                              onPress={()=> navigation.navigate('Lapangan', {...item})}
+                              style={{width: wp(80), height: wp(65)}}
+                              className="flex justify-end relative p-4 py-6 space-y-2 mb-1">
+                                  <Image
+                                      source={item.image}
+                                      style={{width: wp(80), height: wp(65), borderRadius: 35}}
+                                      className="absolute"
+                                  />
+                  
+                              <LinearGradient
+                                  colors={['transparent', 'rgba(0,0,0,0.8)']}
+                                  style={{width: wp(80), height: hp(15), borderBottomLeftRadius: 35, borderBottomRightRadius: 35}}
+                                  start={{x: 0.5, y: 0}}
+                                  end={{x: 0.5, y: 1}}
+                                  className="absolute bottom-0"
+                              />
+                  
+                              <Text style={{fontSize: wp(4)}} className="text-white font-semibold">{item.title}</Text>
+                              <Text style={{fontSize: wp(2.2)}} className="text-white">{item.shortDescription}</Text>
+                  
+                          </TouchableOpacity>
                             )
                         })
                     }
