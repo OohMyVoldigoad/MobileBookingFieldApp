@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 {/* dev */}
 import { theme } from '../theme';
-import { cabangOlahraga, destinationData } from '../constans';
+import { cabangOlahraga, Lapangan, Company } from '../constans';
 import { COLORS } from '../constans';
 
 const ios = Platform.OS=='ios';
@@ -28,7 +28,7 @@ const Feed = () => {
                 >
                   <View className="mx-5 flex-row justify-between items-center mb-10">
                     <Text style={{ fontSize: wp(6) }} className="font-bold text-neutral-700">Halo, User</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Madani')}>
                       <Ionicons
                         name="notifications"
                         size={30}
@@ -84,7 +84,7 @@ const Feed = () => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {
-                        destinationData.map((item,index)=>{
+                        Lapangan.map((item,index)=>{
                             return (
                               <TouchableOpacity
                               key={index}
@@ -130,11 +130,11 @@ const Feed = () => {
                     showsHorizontalScrollIndicator={false}
                   >
                     {
-                        destinationData.map((item,index)=>{
+                        Company.map((item,index)=>{
                             return (
                               <TouchableOpacity
                               key={index}
-                              onPress={()=> navigation.navigate('Lapangan', {...item})}
+                              onPress={()=> navigation.navigate('Company', {...item})}
                               style={{width: wp(80), height: wp(65)}}
                               className="flex justify-end relative p-4 py-6 space-y-2 mb-1">
                                   <Image
@@ -164,7 +164,7 @@ const Feed = () => {
                 {/* footer */}
                 <View className="space-y-20">
                   <View className="mx-25 items-center">
-                  <Text style={{fontSize: wp(15),color: 'white'}} className="font-semibold">Akhir halaman</Text>
+                  <Text style={{fontSize: wp(15),color: COLORS.white}} className="font-semibold">Akhir halaman</Text>
                   </View>
                 </View>
 

@@ -61,12 +61,12 @@ export default function CabangOlahraga(props) {
 
                 {/* Lapangan */}
                 <View className="items-center space-y-5 mx-1 mb-4 rounded-3xl p-3 pl-1">
-                  <ScrollView
+                <ScrollView
                     vertical
                     contentContainerStyle={{paddingVertical: 2}}
                     className="space-x-1"
                     showsHorizontalScrollIndicator={false}
-                  >
+                >
                     {
                         categoriesData.map((cat,index)=>{
                             return (

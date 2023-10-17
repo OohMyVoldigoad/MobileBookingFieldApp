@@ -15,7 +15,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 {/* dev */}
 import { imagesDataURL } from "../../constans/data"; 
-import { COLORS,FONTS } from "../../constans";
+import { COLORS,FONTS,images } from "../../constans";
 
   
 const EditProfile = ({ navigation }) => {
@@ -157,7 +157,7 @@ const EditProfile = ({ navigation }) => {
           >
             <TouchableOpacity onPress={handleImageSelection}>
               <Image
-                source={{ uri: selectedImage }}
+                source={ images.logo }
                 style={{
                   height: 170,
                   width: 170,

@@ -10,5 +10,9 @@ import Search from "./Search/Search";
 import Notifications from "./Notification/Notifications";
 import CabangOlahraga from "./Detail/CabangOlahraga";
 import Lapangan from "./Detail/Lapangan";
+import Company from "./Detail/Company";
+import ReviewOrder from "./Detail/ReviewOrder";
+import MethodePay from "./Payment/Methode";
+import Detail from "./Payment/Detail";
 
-export { Feedback, Home, Profile, Promos, Shop, Welcome, EditProfile, Settings, Search, Notifications, CabangOlahraga, Lapangan}
+export { Feedback, Home, Profile, Promos, Shop, Welcome, EditProfile, Settings, Search, Notifications, CabangOlahraga, Lapangan, Company, ReviewOrder, MethodePay, Detail}
