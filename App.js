@@ -14,6 +14,10 @@ import { Search } from './src/screens'
 import { Notifications } from './src/screens'
 import { CabangOlahraga } from './src/screens'
 import { Lapangan } from './src/screens'
+import { Company } from './src/screens'
+import { ReviewOrder } from './src/screens'
+import { MethodePay } from './src/screens'
+import { Detail } from './src/screens'
 
 const Stack = createNativeStackNavigator()
 
@@ -92,6 +96,34 @@ export default function App() {
                     <Stack.Screen
                         name="Lapangan"
                         component={Lapangan}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Company"
+                        component={Company}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="ReviewOrder"
+                        component={ReviewOrder}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Methode"
+                        component={MethodePay}
+                        options={{
+                            headerShown: false
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Detail"
+                        component={Detail}
                         options={{
                             headerShown: false
                         }}

@@ -12,7 +12,7 @@ const topMargin = ios? 'mt-3': 'mt-2';
 
 
 const Feed = () => {
-  const [activeSort, setActiveSort] = useState('Popular');
+  const [activeSort, setActiveSort] = useState('All');
     return (
         <SafeAreaView className="flex-1 bg-white">
           <ScrollView showsVerticalScrollIndicator={false} className={"space-y-1 "+topMargin}>

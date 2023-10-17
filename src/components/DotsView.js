@@ -29,11 +29,11 @@ const DotsView = ({
                     },
                     progress >= i / (numDots - 1)
                         ? {
-                              backgroundColor: activeDotColor,
-                          }
+                                backgroundColor: activeDotColor,
+                        }
                         : {
-                              backgroundColor: dotColor,
-                          },
+                                backgroundColor: dotColor,
+                        },
                 ]}
             />
         )
