@@ -2,6 +2,7 @@ import { View, Text, Image, ImageBackground  } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
+import { StatusBar } from 'expo-status-bar'
 
 {/* dev */}
 import DotsView from '../components/DotsView'
@@ -10,6 +11,7 @@ import { COLORS, FONTS, images, SIZES } from '../constans'
 const Welcome = () => {
     const [progress, setProgress] = useState(0)
     const navigation = useNavigation()
+    
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -35,6 +37,7 @@ const Welcome = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar style={'light'} />
             <ImageBackground
                 source={images.bg}
                 style={{ flex: 10 }}

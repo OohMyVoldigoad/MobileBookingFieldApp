@@ -313,8 +313,8 @@ return (
             <Text style={{fontSize: wp(5)}} className="font-bold text-neutral-700">
                 Mulai dari : {item.price}
             </Text>
-            <TouchableOpacity style={{backgroundColor: COLORS.black, height: wp(10), width: wp(25), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full" onPress={()=> navigation.navigate('Lapangan', {...item})}>
-                <Text className="text-white font-bold" style={{fontSize: wp(5.5)}}>Pesan</Text>
+            <TouchableOpacity style={{backgroundColor: COLORS.white, height: wp(10), width: wp(25), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full" onPress={()=> navigation.navigate('Lapangan', {...item})}>
+                <Text className="text-black font-bold" style={{fontSize: wp(5.5)}}>Pesan</Text>
             </TouchableOpacity>
         </View>
     </View>

@@ -28,7 +28,7 @@ const Feed = () => {
                 >
                   <View className="mx-5 flex-row justify-between items-center mb-10">
                     <Text style={{ fontSize: wp(6) }} className="font-bold text-neutral-700">Halo, User</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Madani')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
                       <Ionicons
                         name="notifications"
                         size={30}

@@ -4,28 +4,35 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
-    Modal,
-    Switch
+    FlatList
 } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import React, { useState, useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from "react-native-safe-area-context";
-import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
-import { ChevronLeftIcon, StarIcon } from 'react-native-heroicons/outline';
+import { ChevronLeftIcon, BanknotesIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 
 {/* dev */} 
-import { COLORS,FONTS,Price } from "../../constans";
+import { COLORS } from "../../constans";
 
 const ios = Platform.OS == 'ios';
 const topMargin = ios? '': 'mt-10';
 
 const ReviewOrder = (props) => {
     const item = props.route.params;
+    const price = props.route.params.selectedItems;
+    const date = props.route.params.selectedStartDate;
+    const [totalPrice, setTotalPrice] = useState(0);
+    useEffect(() => {
+        const calculateTotalPrice = () => {
+            const total = price.reduce((acc, item) => acc + item.price, 0);
+            setTotalPrice(total);
+        };
+    
+        calculateTotalPrice();
+        }, [price]);
     const navigation = useNavigation();
-    const [totalPayment, setTotalPayment] = useState(201000); // Contoh data total pembayaran
-
 
     return (
         <View className="bg-white flex-1">
@@ -71,7 +78,7 @@ const ReviewOrder = (props) => {
                     <View
                         className="bg-[#BCD8A6] rounded-3xl"
                     >
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
+                        <View style={{borderBottomWidth: 2}} className="flex-wrap justify-start items-center p-1 py-1 mb-1">
                             <Text style={{fontSize: wp(7)}} className="font-bold mr-4 text-neutral-700">
                                 Jadwal Pesanan
                             </Text>
@@ -83,46 +90,41 @@ const ReviewOrder = (props) => {
                         </View>
                         <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
                             <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Senin, 15 Januari 2024
+                                {date}
                             </Text>
                         </View>
-                        <View className="bg-[#FFF9E8] rounded-3xl mb-4 mr-2 ml-2">
-                            <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                    13.00 - 14.00                                      Rp. 100.000
-                                </Text>
-                            </View>
-                        </View>
-                        <View className="bg-[#FFF9E8] rounded-3xl mb-4 mr-2 ml-2">
-                            <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                    13.00 - 14.00                                      Rp. 100.000
-                                </Text>
-                            </View>
-                        </View>
-                        <View className="mb-4 mr-2 ml-2 flex-row items-center">
-                            <View className="bg-[#FFF9E8] rounded-3xl mb-4 mr-2 ml-2 flex-row justify-between">
-                                <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                                    <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                        Hapus
-                                    </Text>
+                        {price.map((item, index) => {
+                            return (
+                                <View key={index} className="bg-[#FFF9E8] rounded-3xl mb-4 mr-2 ml-2">
+                                    <View className="flex-row justify-between items-center p-1 py-1 mb-1">
+                                        <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                            {item.Jam}
+                                        </Text>
+                                        <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                            Rp. {item.price}
+                                        </Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View className="bg-[#FFF9E8] rounded-3xl mb-4 mr-2 ml-2 flex-row justify-between">
-                                <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                                    <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                        Tambah
-                                    </Text>
-                                </View>
+                            )
+                        })}
+                        <View className="rounded-3xl mb-4 mr-2 ml-2">
+                            <View className="flex-row justify-between items-center p-1 py-1 mb-1">
+                                <TouchableOpacity style={{backgroundColor: COLORS.white, height: wp(10), width: wp(40), marginTop: 2, marginBottom: 2}} className="flex justify-center items-center rounded-full">
+                                    <Text className="text-black font-bold" style={{fontSize: wp(5.5)}}>hapus</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=> navigation.goBack()} style={{backgroundColor: COLORS.white, height: wp(10), width: wp(40), marginTop: 2, marginBottom: 2}} className="flex justify-center items-center rounded-full">
+                                    <Text className="text-black font-bold" style={{fontSize: wp(5.5)}}>Tambah</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
 
                     <View className="bg-[#BCD8A6] rounded-3xl">
-                        <View className="flex-wrap justify-between items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(7)}} className="font-bold mr-4 text-neutral-700">
-                                Gunakan Voucher
-                            </Text>
+                        <View className="flex-row justify-between items-center p-1 py-1 mx-2">
+                            <TouchableOpacity>
+                                <Text className="font-bold" style={{fontSize: wp(5), marginLeft: 2}}>Gunakan Voucher</Text>
+                            </TouchableOpacity>
+                            <BanknotesIcon size={wp(7)} color="white" />
                         </View>
                     </View>
 
@@ -130,29 +132,38 @@ const ReviewOrder = (props) => {
                         className="bg-[#BCD8A6] rounded-3xl"
                     >
                         <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(7)}} className="font-bold mr-4 text-neutral-700">
-                                Total
+                            <Text style={{fontSize: wp(6)}} className="font-bold mr-4 text-neutral-700">
+                                Rincian
                             </Text>
                         </View>
-                        <View style={{borderTopWidth: 2, borderBottomWidth: 2}} className="bg-[#FFF9E8] mb-4">
-                            <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
+                        <View style={{borderTopWidth: 2}} className="bg-[#FFF9E8]">
+                            <View className="flex-row justify-between items-center p-1 py-1 ml-2 mb-1 mr-2">
                                 <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                    Biaya sewa                                      Rp. 100.000
+                                    Biaya sewa
                                 </Text>
-                            </View>
-                            <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
                                 <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                    Lain-Lain                                          Rp. 100.000
-                                </Text>
-                            </View>
-                        </View>
-                        <View className="mb-4 mr-2 ml-2 flex-row items-center">
-                            <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                                    Total                                      Rp. 100.000
+                                    Rp. {totalPrice} {/* Menampilkan total harga */}
                                 </Text>
                             </View>
                         </View>
+                        <View style={{borderBottomWidth: 2}} className="bg-[#FFF9E8]">
+                            <View className="flex-row justify-between items-center p-1 py-1 ml-2 mb-1 mr-2">
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                    Biaya tambahan
+                                </Text>
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                    Rp. -
+                                </Text>
+                            </View>
+                        </View>
+                            <View className="flex-row justify-between items-center p-1 py-1 ml-2 mb-1 mr-2">
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                    Total
+                                </Text>
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                    Rp. {totalPrice} {/* Menampilkan total harga */}
+                                </Text>
+                            </View>
                     </View>
                     {/* footer */}
                     <View className="space-y-20">
@@ -167,11 +178,11 @@ const ReviewOrder = (props) => {
             >
                 <View className="space-y-20">
                     <View className="mx-3 items-center">
-                        <Text style={{fontSize: wp(5),color: COLORS.white}} className="font-semibold">Total: Rp. </Text>
+                        <Text style={{fontSize: wp(5),color: COLORS.white}} className="font-semibold">Total: Rp. {totalPrice} {/* Menampilkan total harga */}</Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={()=> navigation.navigate('Methode', {...item})} style={{backgroundColor: COLORS.black, height: wp(10), width: wp(50), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full">
-                    <Text className="text-white font-bold" style={{fontSize: wp(5.5)}}>Pilih pembayaran</Text>
+                <TouchableOpacity onPress={()=> navigation.navigate('Methode', {...item, totalPrice})} style={{backgroundColor: COLORS.white, height: wp(10), width: wp(50), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full">
+                    <Text className="text-black font-bold" style={{fontSize: wp(5.5)}}>Pilih pembayaran</Text>
                 </TouchableOpacity>
             </View>
         </View>

@@ -4,33 +4,28 @@ import {
     Image,
     TouchableOpacity,
     ScrollView,
-    Modal,
-    Switch
 } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from "react-native-safe-area-context";
-import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
-import { ChevronLeftIcon, StarIcon } from 'react-native-heroicons/outline';
+import { ChevronLeftIcon} from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 
 {/* dev */} 
-import { COLORS,FONTS,Price } from "../../constans";
+import { COLORS, images, Ddigital } from "../../constans";
 
 const ios = Platform.OS == 'ios';
 const topMargin = ios? '': 'mt-10';
 
 const MethodePay = (props) => {
-    const item = props.route.params;
+    const price = props.route.params.totalPrice;
     const navigation = useNavigation();
-    const [totalPayment, setTotalPayment] = useState(201000); // Contoh data total pembayaran
-
 
     return (
-        <View className="bg-white flex-1">
+        <View className="flex-1">
             {/* destination image */}
-            <Image source={item.image} style={{width: wp(100), height: hp(25)}} />
+            <Image style={{backgroundColor: COLORS.primary, width: wp(100), height: hp(25)}} />
             <StatusBar style={'light'} />
 
             {/* back button */}
@@ -42,9 +37,12 @@ const MethodePay = (props) => {
                 >
                     <ChevronLeftIcon size={wp(7)} strokeWidth={4} color="white" />
                 </TouchableOpacity>
-                <Text style={{fontSize: wp(7)}} className="font-bold mr-4 text-neutral-700">
-                    {item?.title}
-                </Text>
+                <View className="flex-row justify-end w-full absolute">
+                    <Image source={images.logo_w} style={{width: wp(20), height: hp(10)}}/>
+                    <Text style={{fontSize: wp(6)}} className="font-bold mr-4 text-neutral-700">
+                        Sports Camp
+                    </Text>
+                </View>
             </SafeAreaView>
 
             {/* title & descritpion & booking button */}
@@ -63,21 +61,24 @@ const MethodePay = (props) => {
                                 Total pembayaran
                             </Text>
                             <Text style={{fontSize: wp(5)}} className="font-bold text-neutral-700">
-                                Rp. 200.000
+                                Rp. {price}
                             </Text>
                         </View>
                     </View>
                     
                     <View
-                        className="bg-[#BCD8A6] rounded-3xl"
+                        className="bg-[#BCD8A6]" style={{borderRadius: 10, alignItems: "center",
+                        justifyContent: "center", // Center vertically and horizontally
+                        marginVertical: 5,}}
                     >
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
+                        <View className="flex-wrap items-center p-1 py-1 mb-1">
                             <Text style={{fontSize: wp(7)}} className="font-bold mr-4 text-neutral-700">
                                 Metode pembayaran
                             </Text>
                         </View>
                     </View>
 
+                    
                     <View
                         className="bg-[#BCD8A6] rounded-3xl"
                     >
@@ -86,23 +87,22 @@ const MethodePay = (props) => {
                                 Dompet Digital
                             </Text>
                         </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Dana
-                            </Text>
-                        </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Shoope Pay
-                            </Text>
-                        </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Go Pay
-                            </Text>
-                        </View>
+                        {
+                            Ddigital.map((dana, index) => {
+                                return (
+                                <View key={index} className="flex-row justify-between items-center p-1 py-1 mb-1">
+                                    <TouchableOpacity onPress={() => navigation.navigate('Detail', { price, title: dana.title, Nomor: dana.Nomor, image: dana.image })}>
+                                        <Image source={dana.image} style={{ width: wp(10), height: hp(5), borderRadius: 10 }} />
+                                    </TouchableOpacity>
+                                    <Text style={{ fontSize: wp(5) }} className="font mr-4 text-neutral-700">
+                                        {dana.title}
+                                    </Text>
+                                </View>
+                                );
+                            })
+                        }
                     </View>
-
+                    
                     <View
                         className="bg-[#BCD8A6] rounded-3xl"
                     >
@@ -111,22 +111,32 @@ const MethodePay = (props) => {
                                 Transfer Bank
                             </Text>
                         </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Mandiri
-                            </Text>
+                        <View className="flex-row justify-between items-center p-1 py-1 mb-1">
+                            <TouchableOpacity className="mr-4 flex-row justify-between items-center" onPress={()=> navigation.navigate('Detail',)}>
+                                <Image source={require('../../../assets/imp/PayMethode/mandiri.png')} style={{width: wp(10), height: hp(5), borderRadius: 10}} />
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                Mandiri
+                                </Text>
+                            </TouchableOpacity>
                         </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Bni
-                            </Text>
+                        <View className="flex-row justify-between items-center p-1 py-1 mb-1">
+                            <TouchableOpacity className="mr-4 flex-row justify-between items-center" onPress={()=> navigation.navigate('Detail',)}>
+                                <Image source={require('../../../assets/imp/PayMethode/Bni.jpg')} style={{width: wp(10), height: hp(5), borderRadius: 10}} />
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                Bni
+                                </Text>
+                            </TouchableOpacity>
                         </View>
-                        <View className="flex-wrap justify-start items-center p-1 py-1 mb-1">
-                            <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
-                            Bri
-                            </Text>
+                        <View className="flex-row justify-between items-center p-1 py-1 mb-1">
+                            <TouchableOpacity className="mr-4 flex-row justify-between items-center" onPress={()=> navigation.navigate('Detail',)}>
+                                <Image source={require('../../../assets/imp/PayMethode/bri.png')} style={{width: wp(10), height: hp(5), borderRadius: 10}} />
+                                <Text style={{fontSize: wp(5)}} className="font mr-4 text-neutral-700">
+                                Bri
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
+                    
                     {/* footer */}
                     <View className="space-y-20">
                         <View className="mx-25 items-center">
@@ -134,18 +144,6 @@ const MethodePay = (props) => {
                         </View>
                     </View>
                 </ScrollView>
-            </View>
-            <View
-                className="bg-[#BCD8A6] flex-row justify-between items-center p-1 py-1 "
-            >
-                <View className="space-y-20">
-                    <View className="mx-3 items-center">
-                        <Text style={{fontSize: wp(5),color: COLORS.white}} className="font-semibold">Total: Rp. </Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={()=> navigation.navigate('Detail', {...item})} style={{backgroundColor: COLORS.black, height: wp(10), width: wp(30), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full">
-                    <Text className="text-white font-bold" style={{fontSize: wp(5.5)}}>Bayar</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

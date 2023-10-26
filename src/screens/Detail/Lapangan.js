@@ -5,14 +5,15 @@ import {
     TouchableOpacity,
     ScrollView,
     Modal,
-    Switch
+    Switch,
+    FlatList
 } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from "react-native-safe-area-context";
 import DatePicker, { getFormatedDate } from "react-native-modern-datepicker";
-import { ChevronLeftIcon } from 'react-native-heroicons/outline';
+import { ChevronLeftIcon, ShoppingCartIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 
 {/* dev */} 
@@ -25,9 +26,10 @@ const Lapangan = (props) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedIndexes, setSelectedIndexes] = useState([]);
+    const [selectedItems, setSelectedItems] = useState([]);
+
     const handleItemPress = (item, index) => {
         const selectedIndexArray = [...selectedIndexes];
-
         if (selectedIndexArray.includes(index)) {
             // Item sudah dipilih, maka hapus dari array
             const indexToRemove = selectedIndexArray.indexOf(index);
@@ -38,38 +40,70 @@ const Lapangan = (props) => {
             // Item belum dipilih, maka tambahkan ke array
             selectedIndexArray.push(index);
         }
-
         setSelectedIndexes(selectedIndexArray);
-        
+
+        // Selain dari itu, tambahkan item yang diklik ke dalam selectedItems
+        const selectedItemsArray = [...selectedItems];
+        if (selectedItemsArray.includes(item)) {
+            // Item sudah dipilih, maka hapus dari array
+            const itemIndexToRemove = selectedItemsArray.indexOf(item);
+            if (itemIndexToRemove !== -1) {
+                selectedItemsArray.splice(itemIndexToRemove, 1);
+            }
+        } else {
+            // Item belum dipilih, maka tambahkan ke array
+            selectedItemsArray.push(item);
+        }
+        setSelectedItems(selectedItemsArray);
+
+        // Menghitung total harga saat item diklik
         if (selectedIndexArray.includes(index)) {
-            // Menghitung total harga saat item diklik
             const newTotalPrice = totalPrice + item.price;
             setTotalPrice(newTotalPrice);
-        }else{
+        } else {
             const newTotalPrice1 = totalPrice - item.price;
             setTotalPrice(newTotalPrice1);
         }
     };
+
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     const item = props.route.params;
     const navigation = useNavigation();
+
+    const [selectedDay, setSelectedDay] = useState("Day");
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const today = new Date();
     const startDate = getFormatedDate(
         today.setDate(today.getDate() + 1),
-        "YYYYY/MM/DD h:m"
+        "YYYYY/MM/DD"
     );
-    const [selectedStartDate, setSelectedStartDate] = useState("12/10/2023");
+    const [selectedStartDate, setSelectedStartDate] = useState("2023/10/23");
     const [startedDate, setStartedDate] = useState("");
 
     const handleChangeStartDate = (propDate) => {
         setStartedDate(propDate);
+        // Mengambil hari dari tanggal yang dipilih
+        const date = new Date(propDate);
+        const options = { weekday: 'long' };
+        const day = new Intl.DateTimeFormat('id-ID', options).format(date); // Sesuaikan dengan locale yang Anda inginkan
+        setSelectedDay(day);
     };
 
     const handleOnPressStartDate = () => {
         setOpenStartDatePicker(!openStartDatePicker);
     };
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const openModal = () => {
+        setIsModalVisible(true);
+    };
+    
+    const closeModal = () => {
+        setIsModalVisible(false);
+    };
+    
 
     function renderDatePicker() {
     return (
@@ -105,20 +139,20 @@ const Lapangan = (props) => {
                 }}
             >
                 <DatePicker
-                mode="calendar"
-                minimumDate={startDate}
-                selected={startedDate}
-                onDateChanged={handleChangeStartDate}
-                onSelectedChange={(date) => setSelectedStartDate(date)}
-                options={{
-                    backgroundColor: COLORS.primary,
-                    textHeaderColor: "#469ab6",
-                    textDefaultColor: COLORS.white,
-                    selectedTextColor: COLORS.white,
-                    mainColor: "#469ab6",
-                    textSecondaryColor: COLORS.white,
-                    borderColor: "rgba(122,146,165,0.1)",
-                }}
+                    mode="calendar"
+                    minimumDate={startDate}
+                    selected={startedDate}
+                    onDateChanged={handleChangeStartDate}
+                    onSelectedChange={(date) => setSelectedStartDate(date)}
+                    options={{
+                        backgroundColor: COLORS.primary,
+                        textHeaderColor: "#469ab6",
+                        textDefaultColor: COLORS.white,
+                        selectedTextColor: COLORS.white,
+                        mainColor: "#469ab6",
+                        textSecondaryColor: COLORS.white,
+                        borderColor: "rgba(122,146,165,0.1)",
+                    }}
                 />
 
                 <TouchableOpacity onPress={handleOnPressStartDate}>
@@ -187,7 +221,7 @@ const Lapangan = (props) => {
                                         paddingRight: 8,
                                     }}
                                 >
-                                    <Text style={{ fontSize: wp(5), fontWeight: "bold", color: "#333" }}>{selectedStartDate}</Text>
+                                    <Text style={{ fontSize: wp(5), fontWeight: "bold", color: "#333" }}>{selectedDay}, {selectedStartDate}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -237,6 +271,60 @@ const Lapangan = (props) => {
                             })}
                         </View>
                     </View>
+                    
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={isModalVisible}
+                    >
+                        <View
+                            style={{
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <View
+                                style={{
+                                    margin: 20,
+                                    backgroundColor: COLORS.primary,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 20,
+                                    padding: 35,
+                                    width: "90%",
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                    elevation: 5,
+                                }}
+                            >
+                                <Text style={{ ...FONTS.body3, color: COLORS.white }}>Item yang Dipilih</Text>
+                                <FlatList
+                                    data={selectedItems}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item, index }) => (
+                                        <View key={index}>
+                                            {/* Tampilkan informasi item yang dipilih sesuai kebutuhan */}
+                                            <Text style={{ fontSize: wp(4) }} className="text-black font-semibold">
+                                                {item.Jam}
+                                            </Text>
+                                            <Text style={{ fontSize: wp(4) }} className="text-black">
+                                                Rp. {item.price}
+                                            </Text>
+                                        </View>
+                                    )}
+                                />
+                                <TouchableOpacity onPress={closeModal}>
+                                    <Text style={{ ...FONTS.body3, color: COLORS.white,backgroundColor: COLORS.black }}>Tutup</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                     {/* footer */}
                     <View className="space-y-20">
                         <View className="mx-25 items-center">
@@ -246,16 +334,26 @@ const Lapangan = (props) => {
                 </ScrollView>
             </View>
             <View
-                className="bg-[#BCD8A6] flex-row justify-between items-center p-1 py-1 "
+                className="bg-[#BCD8A6]"
             >
-                <View className="space-y-20">
-                    <View className="mx-3 items-center">
-                        <Text style={{fontSize: wp(5),color: COLORS.white}} className="font-semibold">Total: Rp. {totalPrice}</Text>
+                <View className="flex-row justify-between items-center p-1 py-1">
+                    <TouchableOpacity
+                        onPress={openModal}
+                        className="p-2 rounded-full ml-4"
+                        style={{backgroundColor: 'rgba(255,255,255,0.5)'}}
+                    >
+                        <ShoppingCartIcon size={wp(7)} color="black" />
+                    </TouchableOpacity>
+
+                    <View className="space-y-5">
+                        <View className="mr-20 items-center">
+                            <Text style={{fontSize: wp(5),color: COLORS.black}} className="font-semibold">Total: Rp. {totalPrice}</Text>
+                        </View>
                     </View>
+                    <TouchableOpacity onPress={()=> navigation.navigate('ReviewOrder', {...item, selectedItems, selectedStartDate})} style={{backgroundColor: COLORS.white, height: wp(10), width: wp(25), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full">
+                        <Text className="text-black font-bold" style={{fontSize: wp(5.5)}}>Pesan</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={()=> navigation.navigate('ReviewOrder', {...item})} style={{backgroundColor: COLORS.black, height: wp(10), width: wp(25), marginTop: 2, marginBottom: 2}} className="mb-2 mx-3 flex justify-center items-center rounded-full">
-                    <Text className="text-white font-bold" style={{fontSize: wp(5.5)}}>Pesan</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

@@ -3,6 +3,10 @@ import theme, { COLORS, SIZES, FONTS } from './theme'
 
 export { images, theme, COLORS, SIZES, FONTS }
 
+export const imagesDataURL = [
+    'https://i.ibb.co/B4y9pcb/test.jpg'
+]
+
 export const cabangOlahraga = [
     {
         title: 'Badminton',
@@ -48,8 +52,7 @@ export const categoriesData = [
     {
         title: 'Forest',
         image: require('../../assets/dummy/forest.png')
-    },
-    
+    },   
 ]
 
 export const Lapangan = [
@@ -188,4 +191,34 @@ export const Price = [
         price: 100000,
         status: 'booked'
     },
+]
+export const Ddigital = [
+    {
+        image : require('../../assets/imp/PayMethode/dana.png'),
+        title : 'Dana',
+        Nomor : 87654356271,
+    },
+    {
+        image : require('../../assets/imp/PayMethode/gopay.png'),
+        title : 'Gopay',
+        Nomor : 87654356271,
+    }
+]
+export const Bni = [
+    {
+        title : 'Bni',
+        Nomor : 87654356271,
+    }
+]
+export const Bri = [
+    {
+        title : 'Bri',
+        Nomor : 87654356271,
+    }
+]
+export const Mandiri = [
+    {
+        title : 'Mandiri',
+        Nomor : 87654356271,
+    }
 ]
